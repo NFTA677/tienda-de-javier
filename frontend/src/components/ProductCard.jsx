@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
 import { iniciales, soles } from '../utils'
 
-export default function ProductCard({ producto: p, onEditar, onEliminar }) {
-  const { esAdmin } = useAuth()
+export default function ProductCard({ producto: p }) {
   const { items, agregar } = useCart()
   const aviso = useToast()
   const [imagenRota, setImagenRota] = useState(false)
@@ -33,19 +31,13 @@ export default function ProductCard({ producto: p, onEditar, onEliminar }) {
       <p className="product-desc">{p.descripcion || 'Sin descripción'}</p>
       <div className="price-row">
         <span className="price">{soles(p.precio)}</span>
-        <span className="stock">Stock {p.stock}</span>
+        <span className="stock">{p.categoria || "General"} · {p.stock} u.</span>
       </div>
 
       <button className="btn-white" onClick={agregarAlCarrito} disabled={agotado || sinMas}>
         {agotado ? 'Agotado' : sinMas ? 'Máximo en carrito' : enCarrito ? `Agregar otro (${enCarrito})` : 'Agregar'}
       </button>
 
-      {esAdmin && (
-        <div className="admin-actions">
-          <button className="btn-ghost" onClick={() => onEditar(p)}>Editar</button>
-          <button className="btn-ghost btn-danger" onClick={() => onEliminar(p)}>Eliminar</button>
-        </div>
-      )}
     </article>
   )
 }

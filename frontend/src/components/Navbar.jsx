@@ -3,6 +3,14 @@ import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { iniciales } from '../utils'
 
+export function Marca() {
+  return (
+    <>
+      hackeame<span>.pe</span>
+    </>
+  )
+}
+
 export default function Navbar() {
   const { user, esAdmin, logout } = useAuth()
   const { cantidadTotal } = useCart()
@@ -15,16 +23,15 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <Link to="/" className="logo">
-        FULSTAK<span>.</span>
-        <b>DARK</b>
+      <Link to="/" className="logo" aria-label="hackeame.pe, inicio">
+        <Marca />
       </Link>
 
       <nav className="nav-links">
         <NavLink to="/" end>Inicio</NavLink>
         <NavLink to="/productos">Productos</NavLink>
         {user && <NavLink to="/pedidos">Mis pedidos</NavLink>}
-        {esAdmin && <NavLink to="/usuarios">Usuarios</NavLink>}
+        {esAdmin && <NavLink to="/admin" className="nav-admin">Panel admin</NavLink>}
       </nav>
 
       <div className="nav-right">

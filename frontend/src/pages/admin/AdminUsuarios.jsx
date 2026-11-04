@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import api, { mensajeError } from '../services/api'
-import { useAuth } from '../context/AuthContext'
-import { useToast } from '../context/ToastContext'
-import { fecha, iniciales, soles } from '../utils'
+import api, { mensajeError } from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
+import { useToast } from '../../context/ToastContext'
+import { fecha, iniciales, soles } from '../../utils'
 
-export default function Usuarios() {
+export default function AdminUsuarios() {
   const { user: yo } = useAuth()
   const aviso = useToast()
   const [usuarios, setUsuarios] = useState([])
@@ -53,8 +53,13 @@ export default function Usuarios() {
   }
 
   return (
-    <div className="page">
-      <h2 className="page-title">USUARIOS <span>/{usuarios.length}</span></h2>
+    <div className="admin-page">
+      <header className="admin-head">
+        <div>
+          <h1>Usuarios</h1>
+          <p className="muted">Gestiona las cuentas y los permisos de administrador.</p>
+        </div>
+      </header>
 
       <section className="stats">
         <div className="stat"><b>{usuarios.length}</b><span>Cuentas</span></div>

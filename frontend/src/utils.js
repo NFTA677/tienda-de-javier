@@ -1,5 +1,18 @@
 export const soles = (n) => `S/ ${Number(n || 0).toFixed(2)}`
 
+export const ESTADOS = {
+  pendiente: { label: 'Pendiente', clase: 'badge-amber' },
+  pagado: { label: 'Pagado', clase: 'badge-neon' },
+  enviado: { label: 'Enviado', clase: 'badge-blue' },
+  entregado: { label: 'Entregado', clase: 'badge-green' },
+  cancelado: { label: 'Cancelado', clase: 'badge-red' },
+}
+
+export const fechaHora = (iso) =>
+  new Date(iso).toLocaleString('es-PE', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+
+export const codigoPedido = (id = '') => `#${id.slice(-6).toUpperCase()}`
+
 export const fecha = (iso) =>
   new Date(iso).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' })
 

@@ -2,6 +2,7 @@ const express = require('express');
 const productosController = require('../Controllers/productosController');
 const usuariosController = require('../Controllers/usuariosController');
 const { register, login, me } = require('../Controllers/authController');
+const { resumen } = require('../Controllers/adminController');
 const authMiddleware = require('../Middlewares/authMiddleware');
 const isAdmin = require('../Middlewares/isAdmin');
 const pedidosRoutes = require('./pedidos');
@@ -21,6 +22,9 @@ router.get('/productos/:id', productosController.obtenerUno);
 router.post('/productos', authMiddleware, isAdmin, productosController.crear);
 router.put('/productos/:id', authMiddleware, isAdmin, productosController.actualizar);
 router.delete('/productos/:id', authMiddleware, isAdmin, productosController.eliminar);
+
+// Panel admin
+router.get('/admin/resumen', authMiddleware, isAdmin, resumen);
 
 // Usuarios: solo admin
 router.get('/usuarios', authMiddleware, isAdmin, usuariosController.listar);

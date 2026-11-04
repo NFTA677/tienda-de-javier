@@ -3,16 +3,17 @@ import api, { mensajeError } from '../services/api'
 import { useToast } from '../context/ToastContext'
 import { limpiarUrlImagen } from '../utils'
 
-const vacio = { nombre: '', descripcion: '', precio: '', stock: '', imagen: '' }
+const vacio = { nombre: '', descripcion: '', categoria: '', precio: '', stock: '', imagen: '' }
 
 // Modal para crear o editar un producto (solo admin)
-export default function ProductoForm({ producto, onCerrar, onGuardado }) {
+export default function ProductoForm({ producto, categorias = [], onCerrar, onGuardado }) {
   const editando = Boolean(producto)
   const [form, setForm] = useState(() =>
     editando
       ? {
           nombre: producto.nombre,
           descripcion: producto.descripcion || '',
+          categoria: producto.categoria || '',
           precio: String(producto.precio),
           stock: String(producto.stock),
           imagen: producto.imagen || '',
@@ -36,6 +37,7 @@ export default function ProductoForm({ producto, onCerrar, onGuardado }) {
     const datos = {
       ...form,
       nombre: form.nombre.trim(),
+      categoria: form.categoria.trim() || 'General',
       precio: Number(form.precio),
       stock: Number(form.stock || 0),
     }
@@ -67,6 +69,13 @@ export default function ProductoForm({ producto, onCerrar, onGuardado }) {
         <label>
           Descripción
           <textarea name="descripcion" value={form.descripcion} onChange={cambiar} rows={3} />
+        </label>
+        <label>
+          Categoría
+          <input name="categoria" value={form.categoria} onChange={cambiar} list="lista-categorias" placeholder="Ej: Periféricos, Laptops, Audio..." />
+          <datalist id="lista-categorias">
+            {categorias.map((c) => <option key={c} value={c} />)}
+          </datalist>
         </label>
         <div className="form-row">
           <label>

@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api, { mensajeError } from '../services/api'
 import { useToast } from '../context/ToastContext'
-import { fecha, soles } from '../utils'
+import { ESTADOS, codigoPedido, fecha, soles } from '../utils'
 
-const colorEstado = { pendiente: 'badge-amber', pagado: 'badge-neon', enviado: 'badge-blue' }
 
 export default function MisPedidos() {
   const aviso = useToast()
@@ -39,10 +38,10 @@ export default function MisPedidos() {
           <article key={p.id} className="pedido">
             <header>
               <div>
-                <b>Pedido #{p.id.slice(-6).toUpperCase()}</b>
+                <b>Pedido {codigoPedido(p.id)}</b>
                 <span className="muted"> · {fecha(p.createdAt)}</span>
               </div>
-              <span className={`badge ${colorEstado[p.estado] || ''}`}>{p.estado.toUpperCase()}</span>
+              <span className={`badge ${ESTADOS[p.estado]?.clase || ''}`}>{ESTADOS[p.estado]?.label || p.estado}</span>
             </header>
             <ul>
               {p.detalles.map((d) => (

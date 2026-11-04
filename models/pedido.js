@@ -11,7 +11,7 @@ const pedidoSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     total: { type: Number, required: true },
-    estado: { type: String, enum: ['pendiente', 'pagado', 'enviado'], default: 'pendiente' },
+    estado: { type: String, enum: ['pendiente', 'pagado', 'enviado', 'entregado', 'cancelado'], default: 'pendiente' },
     detalles: [detalleSchema],
   },
   { timestamps: true }
