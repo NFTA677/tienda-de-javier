@@ -1,0 +1,31 @@
+services:
+  # Backend: API Express + MongoDB
+  - type: web
+    name: tienda-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: MONGODB_URI
+        sync: false   # se pide al crear el Blueprint (URL de MongoDB Atlas)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false   # URL del frontend en Render, ej: https://tienda-web.onrender.com
+
+  # Frontend: React + Vite como sitio estático
+  - type: web
+    name: tienda-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false   # URL del backend en Render, ej: https://tienda-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
