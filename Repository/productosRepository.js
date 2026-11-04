@@ -1,7 +1,7 @@
 const { isValidObjectId } = require('mongoose');
 const Producto = require('../models/producto');
 
-const getAll = () => Producto.find();
+const getAll = () => Producto.find().sort({ createdAt: -1 });
 
 const getById = (id) => (isValidObjectId(id) ? Producto.findById(id) : null);
 

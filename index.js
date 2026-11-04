@@ -17,7 +17,7 @@ app.use(cors({ origin: origenes, credentials: true }));
 app.use(express.json());
 
 app.get('/health', (req, res) => res.json({ ok: true }));
-app.use('/', rutas);
+app.use('/api', rutas);
 
 // Sirve el frontend compilado (frontend/dist) desde el mismo servidor
 const frontendDist = path.join(__dirname, 'frontend', 'dist');
