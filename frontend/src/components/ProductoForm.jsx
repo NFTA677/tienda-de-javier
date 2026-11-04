@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import api, { mensajeError } from '../services/api'
 import { useToast } from '../context/ToastContext'
+import { limpiarUrlImagen } from '../utils'
 
 const vacio = { nombre: '', descripcion: '', precio: '', stock: '', imagen: '' }
 
@@ -20,9 +21,14 @@ export default function ProductoForm({ producto, onCerrar, onGuardado }) {
   )
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState('')
+  const [imagenRota, setImagenRota] = useState(false)
   const aviso = useToast()
 
-  const cambiar = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const cambiar = (e) => {
+    const { name, value } = e.target
+    if (name === 'imagen') setImagenRota(false)
+    setForm({ ...form, [name]: name === 'imagen' ? limpiarUrlImagen(value) : value })
+  }
 
   const guardar = async (e) => {
     e.preventDefault()
@@ -76,7 +82,15 @@ export default function ProductoForm({ producto, onCerrar, onGuardado }) {
           URL de imagen (opcional)
           <input name="imagen" type="url" value={form.imagen} onChange={cambiar} placeholder="https://..." />
         </label>
-        {form.imagen && <img className="preview-img" src={form.imagen} alt="Vista previa" />}
+        {form.imagen && !imagenRota && (
+          <img className="preview-img" src={form.imagen} alt="Vista previa" onError={() => setImagenRota(true)} />
+        )}
+        {imagenRota && (
+          <p className="form-aviso">
+            Ese enlace no es una imagen. En Google Imágenes, abre la imagen, haz clic derecho sobre ella y
+            elige <b>"Copiar dirección de imagen"</b>.
+          </p>
+        )}
 
         {error && <p className="form-error">{error}</p>}
 

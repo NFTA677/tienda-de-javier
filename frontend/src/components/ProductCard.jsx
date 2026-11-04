@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { useToast } from '../context/ToastContext'
@@ -7,6 +8,7 @@ export default function ProductCard({ producto: p, onEditar, onEliminar }) {
   const { esAdmin } = useAuth()
   const { items, agregar } = useCart()
   const aviso = useToast()
+  const [imagenRota, setImagenRota] = useState(false)
 
   const enCarrito = items.find((i) => i.id === p.id)?.cantidad || 0
   const agotado = p.stock <= 0
@@ -20,7 +22,11 @@ export default function ProductCard({ producto: p, onEditar, onEliminar }) {
   return (
     <article className="product-card">
       <div className="product-img">
-        {p.imagen ? <img src={p.imagen} alt={p.nombre} loading="lazy" /> : <span>{iniciales(p.nombre)}</span>}
+        {p.imagen && !imagenRota ? (
+          <img src={p.imagen} alt={p.nombre} loading="lazy" onError={() => setImagenRota(true)} />
+        ) : (
+          <span>{iniciales(p.nombre)}</span>
+        )}
         {agotado && <span className="badge badge-red product-flag">AGOTADO</span>}
       </div>
       <h3>{p.nombre}</h3>
