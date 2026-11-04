@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 // Exige sesión iniciada (y rol admin si soloAdmin)
@@ -13,6 +13,7 @@ export default function RutaProtegida({ soloAdmin = false, children }) {
       <div className="page vacio">
         <h2>Acceso restringido</h2>
         <p>Esta sección es solo para administradores.</p>
+        <Link to="/" className="btn-neon">Volver a la tienda</Link>
       </div>
     )
   }

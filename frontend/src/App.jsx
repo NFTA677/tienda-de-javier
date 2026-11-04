@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { ToastProvider } from './context/ToastContext'
@@ -26,15 +26,51 @@ function NoEncontrado() {
   )
 }
 
+// Dentro del panel admin no se muestran el menú ni el pie de la tienda
+function Tienda({ children }) {
+  const enAdmin = useLocation().pathname.startsWith('/admin')
+  return (
+    <div className={enAdmin ? 'app-dark app-admin' : 'app-dark'}>
+      {!enAdmin && <Navbar />}
+      <main>{children}</main>
+      {!enAdmin && <Pie />}
+    </div>
+  )
+}
+
+function Pie() {
+  return (
+    <footer className="footer">
+      <div className="footer-cols">
+        <div>
+          <span className="logo"><Marca /></span>
+          <p className="muted">Tu tienda en línea. Compra fácil y sigue tus pedidos.</p>
+        </div>
+        <nav>
+          <b>Tienda</b>
+          <Link to="/">Inicio</Link>
+          <Link to="/productos">Productos</Link>
+          <Link to="/carrito">Carrito</Link>
+        </nav>
+        <nav>
+          <b>Mi cuenta</b>
+          <Link to="/pedidos">Mis pedidos</Link>
+          <Link to="/login">Entrar</Link>
+          <Link to="/registro">Crear cuenta</Link>
+        </nav>
+      </div>
+      <p className="footer-copy">© {new Date().getFullYear()} hackeame.pe · Todos los derechos reservados</p>
+    </footer>
+  )
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <ToastProvider>
         <AuthProvider>
           <CartProvider>
-            <div className="app-dark">
-              <Navbar />
-              <main>
+            <Tienda>
                 <Routes>
                   <Route path="/" element={<Inicio />} />
                   <Route path="/productos" element={<Productos />} />
@@ -53,29 +89,7 @@ export default function App() {
 
                   <Route path="*" element={<NoEncontrado />} />
                 </Routes>
-              </main>
-              <footer className="footer">
-                <div className="footer-cols">
-                  <div>
-                    <span className="logo"><Marca /></span>
-                    <p className="muted">Tu tienda en línea. Compra fácil y sigue tus pedidos.</p>
-                  </div>
-                  <nav>
-                    <b>Tienda</b>
-                    <Link to="/">Inicio</Link>
-                    <Link to="/productos">Productos</Link>
-                    <Link to="/carrito">Carrito</Link>
-                  </nav>
-                  <nav>
-                    <b>Mi cuenta</b>
-                    <Link to="/pedidos">Mis pedidos</Link>
-                    <Link to="/login">Entrar</Link>
-                    <Link to="/registro">Crear cuenta</Link>
-                  </nav>
-                </div>
-                <p className="footer-copy">© {new Date().getFullYear()} hackeame.pe · Todos los derechos reservados</p>
-              </footer>
-            </div>
+            </Tienda>
           </CartProvider>
         </AuthProvider>
       </ToastProvider>
