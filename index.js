@@ -9,6 +9,9 @@ const soap = require('./Controllers/soapController');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Render atiende HTTPS delante del servidor: así req.protocol refleja "https"
+app.set('trust proxy', 1);
+
 // FRONTEND_URL admite varias URLs separadas por coma
 const origenes = (process.env.FRONTEND_URL || 'http://localhost:5173')
   .split(',')
